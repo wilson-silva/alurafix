@@ -1,4 +1,4 @@
-# alurafix
+# aluraflix
 Challenge Backend - api
 
 <p align="center">
@@ -25,7 +25,7 @@ Pré-requisitos:
 # EM INICIO DE DESENVOLVIMENTO NÃO SENDO POSSÍVEL EXECUTAR OS PASSAS ABAIXO.
 
 # clonar repositório
-git clone https://github.com/wilson-silva/alurafix
+git clone https://github.com/wilson-silva/aluraflix
 
 
 # --- Rodar aplicação aluraflix ---

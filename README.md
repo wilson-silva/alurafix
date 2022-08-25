@@ -44,7 +44,7 @@ cd aluraflix ou abrir o bash dentro da pasta
 - Spring Boot
 - Maven
 - Banco H2 
-- Flayway
+- Flyway
 
 
 ### Autor

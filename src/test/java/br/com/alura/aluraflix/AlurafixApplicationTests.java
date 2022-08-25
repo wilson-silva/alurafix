@@ -1,4 +1,4 @@
-package br.com.alura.alurafix;
+package br.com.alura.aluraflix;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

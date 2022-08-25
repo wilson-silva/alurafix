@@ -18,7 +18,7 @@ Pré-requisitos:
 * Java 17 ou versões superiores.
 * Intellj IDEA Community Edition ou sua IDE favorita.
 * Controle de versão GIT instalado na sua máquina.
-* Banco H2
+* Banco H2 - versão 2.0.20
 
 ```bash
 
@@ -43,7 +43,8 @@ cd aluraflix ou abrir o bash dentro da pasta
 - Intellij
 - Spring Boot
 - Maven
-- Banco H2
+- Banco H2 
+- Flayway
 
 
 ### Autor

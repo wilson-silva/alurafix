@@ -1,4 +1,4 @@
-package br.com.alura.aluraflix.model;
+package br.com.alura.aluraflix.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,4 +1,4 @@
-# aluraflix
+# videoflix
 Challenge Backend - api
 
 <p align="center">
@@ -28,9 +28,9 @@ Pré-requisitos:
 git clone https://github.com/wilson-silva/aluraflix
 
 
-# --- Rodar aplicação aluraflix ---
+# --- Rodar aplicação videoflix ---
 
-# entrar na pasta do projeto aluraflix
+# entrar na pasta do projeto videoflix
 cd aluraflix ou abrir o bash dentro da pasta
 
 # executar o projeto

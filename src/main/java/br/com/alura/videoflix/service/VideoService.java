@@ -1,12 +1,9 @@
-package br.com.alura.aluraflix.service;
+package br.com.alura.videoflix.service;
 
-import br.com.alura.aluraflix.entity.Video;
-import br.com.alura.aluraflix.repository.VideoRepository;
-import org.springframework.http.HttpStatus;
+import br.com.alura.videoflix.entity.Video;
+import br.com.alura.videoflix.repository.VideoRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 

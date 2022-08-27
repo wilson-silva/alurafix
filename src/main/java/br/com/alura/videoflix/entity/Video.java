@@ -1,4 +1,4 @@
-package br.com.alura.aluraflix.entity;
+package br.com.alura.videoflix.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

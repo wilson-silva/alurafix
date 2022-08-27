@@ -1,7 +1,7 @@
-package br.com.alura.aluraflix.controller;
+package br.com.alura.videoflix.controller;
 
-import br.com.alura.aluraflix.entity.Video;
-import br.com.alura.aluraflix.service.VideoService;
+import br.com.alura.videoflix.entity.Video;
+import br.com.alura.videoflix.service.VideoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

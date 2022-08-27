@@ -25,7 +25,7 @@ Pré-requisitos:
 # EM INICIO DE DESENVOLVIMENTO NÃO SENDO POSSÍVEL EXECUTAR OS PASSAS ABAIXO.
 
 # clonar repositório
-git clone https://github.com/wilson-silva/aluraflix
+git clone https://github.com/wilson-silva/videoflix
 
 
 # --- Rodar aplicação videoflix ---
@@ -50,4 +50,4 @@ cd aluraflix ou abrir o bash dentro da pasta
 ### Autor
 Wilson Gimenes da Silva
 
-https://github.com/wilson-silva/aluraflix
+https://github.com/wilson-silva/videoflix

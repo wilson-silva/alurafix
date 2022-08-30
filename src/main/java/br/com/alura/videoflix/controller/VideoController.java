@@ -4,11 +4,9 @@ import br.com.alura.videoflix.entity.Video;
 import br.com.alura.videoflix.service.VideoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,18 +22,25 @@ public class VideoController {
     //---------------------------------------------------------
 
     @GetMapping
-    public ResponseEntity<List<Video>> getAllVideos(){
-        return ResponseEntity.status(HttpStatus.OK).body(service.findAll());
+    public ResponseEntity<List<Video>> buscarTodosOsVideos(){
+        return ResponseEntity.status(HttpStatus.OK).body(service.listarTodos());
     }
     //---------------------------------------------------------
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Object> getOneVideo(@PathVariable Long id) {
-        Optional<Video> videoOptional = service.findById(id);
+    public ResponseEntity<Object> buscarVideo(@PathVariable Long id) {
+        Optional<Video> videoOptional = service.buscarPorId(id);
         if (!videoOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("video nao encontrado");
         }
         return ResponseEntity.status(HttpStatus.OK).body(videoOptional.get());
     }
     //---------------------------------------------------------
+
+    @PostMapping
+    public ResponseEntity<Video> salvar(@RequestBody @Valid Video video){
+        Video videoSalvo = service.salvar(video);
+        return ResponseEntity.status(HttpStatus.CREATED).body(videoSalvo);
+    }
+
 }

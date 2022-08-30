@@ -18,14 +18,18 @@ public class VideoService {
 
     //---------------------------------------------------------
 
-    public List<Video> findAll() {
+    public List<Video> listarTodos() {
         return repository.findAll();
     }
     //---------------------------------------------------------
 
-    public Optional<Video> findById(Long id) {
+    public Optional<Video> buscarPorId(Long id) {
         return repository.findById(id);
     }
     //---------------------------------------------------------
+
+    public Video salvar(Video video){
+        return repository.save(video);
+    }
 
 }

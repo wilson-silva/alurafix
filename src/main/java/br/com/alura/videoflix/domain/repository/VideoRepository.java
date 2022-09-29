@@ -1,6 +1,6 @@
-package br.com.alura.videoflix.repository;
+package br.com.alura.videoflix.domain.repository;
 
-import br.com.alura.videoflix.entity.Video;
+import br.com.alura.videoflix.domain.entity.Video;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

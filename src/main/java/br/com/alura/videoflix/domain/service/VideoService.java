@@ -1,8 +1,8 @@
-package br.com.alura.videoflix.service;
+package br.com.alura.videoflix.domain.service;
 
-import br.com.alura.videoflix.entity.Video;
+import br.com.alura.videoflix.domain.entity.Video;
+import br.com.alura.videoflix.domain.repository.VideoRepository;
 import br.com.alura.videoflix.exception.BusinessException;
-import br.com.alura.videoflix.repository.VideoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

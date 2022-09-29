@@ -1,8 +1,8 @@
-package br.com.alura.videoflix.controller;
+package br.com.alura.videoflix.api.controller;
 
-import br.com.alura.videoflix.entity.Video;
-import br.com.alura.videoflix.repository.VideoRepository;
-import br.com.alura.videoflix.service.VideoService;
+import br.com.alura.videoflix.domain.entity.Video;
+import br.com.alura.videoflix.domain.repository.VideoRepository;
+import br.com.alura.videoflix.domain.service.VideoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

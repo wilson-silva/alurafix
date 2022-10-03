@@ -1,5 +1,8 @@
 package br.com.alura.videoflix.api.controller;
 
+import br.com.alura.videoflix.api.mapper.VideoMapper;
+import br.com.alura.videoflix.api.request.VideoRequest;
+import br.com.alura.videoflix.api.response.VideoResponse;
 import br.com.alura.videoflix.domain.entity.Video;
 import br.com.alura.videoflix.domain.repository.VideoRepository;
 import br.com.alura.videoflix.domain.service.VideoService;
@@ -21,47 +24,47 @@ public class VideoController {
     private final VideoService service;
 
     private final VideoRepository repository;
-
     //------------------------------------------------------------------------------------------
 
     @GetMapping
-    public ResponseEntity<List<Video>> listAllVideos(){
-        return ResponseEntity.status(HttpStatus.OK).body(service.listAll());
+    public ResponseEntity<List<VideoResponse>> listAllVideos(){
+        List<Video> videos = service.listAll();
+        List<VideoResponse> videoResponses = VideoMapper.toVideoResponseList(videos);
+        return ResponseEntity.status(HttpStatus.OK).body(videoResponses);
     }
-
     //------------------------------------------------------------------------------------------
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> searchVideo(@PathVariable Long id) {
+    public ResponseEntity<VideoResponse> searchVideo(@PathVariable Long id) {
         Optional<Video> videoOptional = service.searchById(id);
         if (videoOptional.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Video não encontrado!");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        return ResponseEntity.status(HttpStatus.OK).body(videoOptional.get());
+        return ResponseEntity.status(HttpStatus.OK).body(VideoMapper.toVideoResponse(videoOptional.get()));
     }
-
     //------------------------------------------------------------------------------------------
 
     @PostMapping
-    public ResponseEntity<Video> toSaveVideo(@RequestBody @Valid Video video){
-        Video savedVideo = service.toSave(video);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedVideo);
+    public ResponseEntity<VideoResponse> toSaveVideo(@RequestBody @Valid VideoRequest request) {
+        var video = VideoMapper.toVideo(request);
+        var savedVideo = service.toSave(video);
+        var response = VideoMapper.toVideoResponse(savedVideo);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
-
     //------------------------------------------------------------------------------------------
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> toUpdateVideo(@PathVariable Long id, @RequestBody @Valid Video video){
-
+    public ResponseEntity<VideoResponse> toUpdateVideo(@PathVariable Long id, @RequestBody @Valid VideoRequest request){
+        var video = VideoMapper.toVideo(request);
         Optional<Video> videoOptional = service.searchById(id);
         if(videoOptional.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Video not found.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         video.setId(videoOptional.get().getId());
-        return ResponseEntity.status(HttpStatus.OK).body(service.toSave(video));
-
+        var savedVideo = service.toSave(video);
+        var videoResponse = VideoMapper.toVideoResponse(savedVideo);
+        return ResponseEntity.status(HttpStatus.OK).body(videoResponse);
     }
-
     //------------------------------------------------------------------------------------------
 
     @DeleteMapping("/{id}")

@@ -44,6 +44,7 @@ public class VideoService {
 
         if(existUrl){
            throw new BusinessException("url already registered");
+
         }
 
         return repository.save(video);

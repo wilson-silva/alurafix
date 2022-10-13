@@ -11,7 +11,8 @@ public class AlurafixApplication {
 		SpringApplication.run(AlurafixApplication.class, args);
 
 		System.out.println(Cor.AMARELO.getDescricao());
-		System.out.println(Cor.corPorCorHex("#0000FF"));
+		System.out.println(Cor.AMARELO);
+		System.out.println(Cor.corPorCorHex("#FFFF00"));
 
 	}
 

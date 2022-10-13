@@ -21,13 +21,9 @@ public class Video {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //@NotBlank
     private String title;
 
-    //@NotBlank
     private String description;
 
-    //@NotBlank
-    //@URL(message = "invalid URL")
     private String url;
 }

@@ -1,12 +1,12 @@
 package br.com.alura.videoflix.domain.entity;
 
+import br.com.alura.videoflix.domain.enums.Cor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 
 @Data
 @Builder
@@ -20,10 +20,9 @@ public class Categoria {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     private String title;
 
-    @NotBlank
-    private String cor;
+    @Enumerated(EnumType.STRING)
+    private Cor cor;
 
 }

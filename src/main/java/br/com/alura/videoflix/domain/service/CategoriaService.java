@@ -34,7 +34,7 @@ public class CategoriaService {
 
         boolean existeCor = false;
 
-        Optional<Categoria> categoriaOptional = repository.findBycor(categoria.getCor());
+        Optional<Categoria> categoriaOptional = repository.findBycor(categoria.getCor().getDescricao());
 
         if(categoriaOptional.isPresent()){
             if(!categoriaOptional.get().getId().equals(categoria.getId())){
@@ -49,6 +49,7 @@ public class CategoriaService {
         return repository.save(categoria);
     }
     //------------------------------------------------------------------------------------------
+
 
 
 

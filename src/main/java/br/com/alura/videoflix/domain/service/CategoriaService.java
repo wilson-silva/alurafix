@@ -1,6 +1,6 @@
 package br.com.alura.videoflix.domain.service;
 
-import br.com.alura.videoflix.domain.entity.Categoria;
+import br.com.alura.videoflix.domain.entity.Category;
 import br.com.alura.videoflix.domain.repository.CategoriaRepository;
 import br.com.alura.videoflix.exception.BusinessException;
 import org.springframework.stereotype.Service;
@@ -19,34 +19,35 @@ public class CategoriaService {
     }
     //------------------------------------------------------------------------------------------
 
-    public List<Categoria> listAll() {
+    public List<Category> listAll() {
       return repository.findAll();
     }
     //------------------------------------------------------------------------------------------
 
-    public Optional<Categoria> searchById(Long id){
+    public Optional<Category> searchById(Long id){
         return repository.findById(id);
     }
     //------------------------------------------------------------------------------------------
 
     @Transactional
-    public Categoria toSave(Categoria categoria) {
+    public Category toSave(Category category) {
 
-        boolean existeCor = false;
+        boolean existeCategory = false;
 
-        Optional<Categoria> categoriaOptional = repository.findBycor(categoria.getCor().getDescricao());
+        Optional<Category> categoriaOptional = repository.findByTitle(category.getTitle());
+
 
         if(categoriaOptional.isPresent()){
-            if(!categoriaOptional.get().getId().equals(categoria.getId())){
-                existeCor = true;
+            if(!(categoriaOptional.get().getId().equals(category.getId()))){
+                existeCategory = true;
             }
         }
 
-        if(existeCor){
-            throw new BusinessException("cor already registered");
+        if(existeCategory){
+            throw new BusinessException("category already registered");
         }
 
-        return repository.save(categoria);
+        return repository.save(category);
     }
     //------------------------------------------------------------------------------------------
 

@@ -1,6 +1,5 @@
 package br.com.alura.videoflix.domain.entity;
 
-import br.com.alura.videoflix.domain.enums.Cor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,8 +12,8 @@ import javax.persistence.*;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "categoria")
-public class Categoria {
+@Table(name = "category")
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +21,7 @@ public class Categoria {
 
     private String title;
 
-    @Enumerated(EnumType.STRING)
-    private Cor cor;
+    private String color;
 
 }
+

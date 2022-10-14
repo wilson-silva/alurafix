@@ -3,7 +3,7 @@ package br.com.alura.videoflix.api.controller;
 import br.com.alura.videoflix.api.mapper.CategoriaMapper;
 import br.com.alura.videoflix.api.request.CategoriaRequest;
 import br.com.alura.videoflix.api.response.CategoriaResponse;
-import br.com.alura.videoflix.domain.entity.Categoria;
+import br.com.alura.videoflix.domain.entity.Category;
 import br.com.alura.videoflix.domain.service.CategoriaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +25,15 @@ public class CategoriaController {
 
     @GetMapping
     public ResponseEntity<List<CategoriaResponse>> listAllCategories() {
-        List<Categoria> categorias = service.listAll();
-        List<CategoriaResponse> categoriaResponses = CategoriaMapper.toCategoriaResponseList(categorias);
+        List<Category> categories = service.listAll();
+        List<CategoriaResponse> categoriaResponses = CategoriaMapper.toCategoriaResponseList(categories);
         return ResponseEntity.status(HttpStatus.OK).body(categoriaResponses);
     }
     //------------------------------------------------------------------------------------------
 
     @GetMapping("/{id}")
     public ResponseEntity<CategoriaResponse> searchCategory(@PathVariable Long id) {
-        Optional<Categoria> categoriaOptional = service.searchById(id);
+        Optional<Category> categoriaOptional = service.searchById(id);
         if (categoriaOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
@@ -54,7 +54,7 @@ public class CategoriaController {
     public ResponseEntity<CategoriaResponse> toUpdateCategory(@PathVariable Long id, @RequestBody
     @Valid CategoriaRequest request) {
         var categoria = CategoriaMapper.toCategoria(request);
-        Optional<Categoria> categoriaOptional = service.searchById(id);
+        Optional<Category> categoriaOptional = service.searchById(id);
         if(categoriaOptional.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }

@@ -10,7 +10,7 @@ Challenge Backend - api
 Este projeto faz parte do desafio proposto pela Alura através do Challenge Backend, onde será desenvolvido uma API REST do zero, 
 utilizando metódos agéis, como kanbam, ferramentas como o Trello para gerenciamento do projeto, onde estarão os cards contendo as tarefas a serem implementadas, simulando assim um ambiente real de desenvolvimento.
 Esta API será uma plataforma de compartilhamento de vídeos, ela deve permitir ao usuário montar playlists com links para seus 
-vídeos preferidos, separados por categorias.
+vídeos preferidos, separados por categories.
 
 
 Pré-requisitos:

@@ -9,11 +9,11 @@ import javax.validation.constraints.NotBlank;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoriaRequest {
+public class CategoryRequest {
 
     @NotBlank
     private String title;
 
     @NotBlank
-    private String cor;
+    private String color;
 }

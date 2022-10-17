@@ -35,7 +35,7 @@ public class VideoController {
     //------------------------------------------------------------------------------------------
 
     @GetMapping("/{id}")
-    public ResponseEntity<VideoResponse> searchVideo(@PathVariable Long id) {
+    public ResponseEntity<VideoResponse> getOneVideo(@PathVariable Long id) {
         Optional<Video> videoOptional = service.searchById(id);
         if (videoOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -45,7 +45,7 @@ public class VideoController {
     //------------------------------------------------------------------------------------------
 
     @PostMapping
-    public ResponseEntity<VideoResponse> toSaveVideo(@RequestBody @Valid VideoRequest request) {
+    public ResponseEntity<VideoResponse> saveVideo(@RequestBody @Valid VideoRequest request) {
         var video = VideoMapper.toVideo(request);
         var savedVideo = service.toSave(video);
         var response = VideoMapper.toVideoResponse(savedVideo);
@@ -54,7 +54,7 @@ public class VideoController {
     //------------------------------------------------------------------------------------------
 
     @PutMapping("/{id}")
-    public ResponseEntity<VideoResponse> toUpdateVideo(@PathVariable Long id, @RequestBody @Valid VideoRequest request){
+    public ResponseEntity<VideoResponse> updateVideo(@PathVariable Long id, @RequestBody @Valid VideoRequest request){
         var video = VideoMapper.toVideo(request);
         Optional<Video> videoOptional = service.searchById(id);
         if(videoOptional.isEmpty()){
@@ -69,7 +69,7 @@ public class VideoController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteVideo(@PathVariable Long id){
-        service.delete(id);
+        service.deleteVideo(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 

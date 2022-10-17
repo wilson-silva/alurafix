@@ -32,17 +32,17 @@ public class VideoService {
     @Transactional
     public Video toSave(Video video){
 
-        boolean existUrl = false;
+        boolean thereIsUrl = false;
 
         Optional<Video> videoOptional = repository.findByUrl(video.getUrl());
 
         if(videoOptional.isPresent()){
             if(!videoOptional.get().getId().equals(video.getId())){
-                existUrl = true;
+                thereIsUrl = true;
             }
         }
 
-        if(existUrl){
+        if(thereIsUrl){
            throw new BusinessException("url already registered");
 
         }
@@ -51,9 +51,8 @@ public class VideoService {
     }
     //------------------------------------------------------------------------------------------
     @Transactional
-    public void delete(Long id){
+    public void deleteVideo(Long id){
         repository.deleteById(id);
     }
-
 
 }

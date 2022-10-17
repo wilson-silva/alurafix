@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoriaResponse {
+public class CategoryResponse {
     private Long id;
     private String title;
-    private String cor;
+    private String color;
 }

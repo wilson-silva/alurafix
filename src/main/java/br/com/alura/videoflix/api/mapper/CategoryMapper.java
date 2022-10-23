@@ -3,32 +3,30 @@ package br.com.alura.videoflix.api.mapper;
 import br.com.alura.videoflix.api.request.CategoryRequest;
 import br.com.alura.videoflix.api.response.CategoryResponse;
 import br.com.alura.videoflix.domain.entity.Category;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+@Component
+@RequiredArgsConstructor
 public class CategoryMapper {
 
-    public static Category toCategory(CategoryRequest request) {
-        Category category = new Category();
-        category.setColor(request.getColor());
-        category.setTitle(request.getTitle());
-        return category;
+    private final ModelMapper mapper;
+
+    public Category toCategory(CategoryRequest request) {
+        return mapper.map(request, Category.class);
     }
 
-    public static CategoryResponse toCategoryResponse(Category category) {
-        CategoryResponse response = new CategoryResponse();
-        response.setId(category.getId());
-        response.setColor(category.getColor());
-        response.setTitle(category.getTitle());
-        return response;
+    public CategoryResponse toCategoryResponse(Category category) {
+        return mapper.map(category, CategoryResponse.class);
     }
 
-    public static List<CategoryResponse> toCategoryResponseList(List<Category> categories) {
-        List<CategoryResponse> responses = new ArrayList<>();
-        for (Category category : categories){
-            responses.add(toCategoryResponse(category));
-        }
-        return responses;
+    public List<CategoryResponse> toCategoryResponseList(List<Category> categories) {
+        return categories.stream()
+                .map(this::toCategoryResponse)
+                .collect(Collectors.toList());
     }
 }

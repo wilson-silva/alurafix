@@ -1,20 +1,17 @@
 package br.com.alura.videoflix.domain.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 
-@Data
-@Builder
+
 @Entity
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "video")
+@Table(name = "videos")
 public class Video {
 
     @Id
@@ -26,4 +23,8 @@ public class Video {
     private String description;
 
     private String url;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Category category;
+
 }

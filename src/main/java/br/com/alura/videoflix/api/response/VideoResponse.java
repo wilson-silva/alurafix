@@ -11,7 +11,9 @@ import lombok.NoArgsConstructor;
 
 public class VideoResponse {
     private Long id;
+    private Long categoryId;
     private String title;
     private String description;
     private String url;
+
 }

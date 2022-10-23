@@ -21,12 +21,14 @@ import java.util.Optional;
 public class CategoryController {
 
     private final CategoryService service;
+
+    private final CategoryMapper mapper;
     //------------------------------------------------------------------------------------------
 
     @GetMapping
     public ResponseEntity<List<CategoryResponse>> listAllCategories() {
         List<Category> categories = service.listAll();
-        List<CategoryResponse> categoryResponses = CategoryMapper.toCategoryResponseList(categories);
+        List<CategoryResponse> categoryResponses = mapper.toCategoryResponseList(categories);
         return ResponseEntity.status(HttpStatus.OK).body(categoryResponses);
     }
     //------------------------------------------------------------------------------------------
@@ -37,15 +39,15 @@ public class CategoryController {
         if (categoryOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        return ResponseEntity.status(HttpStatus.OK).body(CategoryMapper.toCategoryResponse(categoryOptional.get()));
+        return ResponseEntity.status(HttpStatus.OK).body(mapper.toCategoryResponse(categoryOptional.get()));
     }
 
     //------------------------------------------------------------------------------------------
     @PostMapping
     public ResponseEntity<CategoryResponse> saveCategory(@RequestBody @Valid CategoryRequest request) {
-        var category = CategoryMapper.toCategory(request);
+        var category = mapper.toCategory(request);
         var savedCategory = service.toSave(category);
-        var response = CategoryMapper.toCategoryResponse(savedCategory);
+        var response = mapper.toCategoryResponse(savedCategory);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
     //------------------------------------------------------------------------------------------
@@ -53,20 +55,20 @@ public class CategoryController {
     @PutMapping("/{id}")
     public ResponseEntity<CategoryResponse> updateCategory(@PathVariable Long id, @RequestBody
     @Valid CategoryRequest request) {
-        var category = CategoryMapper.toCategory(request);
+        var category = mapper.toCategory(request);
         Optional<Category> categoryOptional = service.searchById(id);
-        if(categoryOptional.isEmpty()){
+        if (categoryOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         category.setId(categoryOptional.get().getId());
         var savedCategory = service.toSave(category);
-        var categoryResponse = CategoryMapper.toCategoryResponse(savedCategory);
+        var categoryResponse = mapper.toCategoryResponse(savedCategory);
         return ResponseEntity.status(HttpStatus.OK).body(categoryResponse);
     }
     //------------------------------------------------------------------------------------------
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCategory(@PathVariable Long id){
+    public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
         service.deleteCategory(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 

@@ -12,15 +12,19 @@ import java.util.Optional;
 @Service
 public class VideoService {
 
-    private final VideoRepository repository;
+    private VideoRepository repository;
 
     public VideoService(VideoRepository repository) {
         this.repository = repository;
     }
+
+
     //------------------------------------------------------------------------------------------
 
     public List<Video> listAll() {
+
         return repository.findAll();
+
     }
     //------------------------------------------------------------------------------------------
 

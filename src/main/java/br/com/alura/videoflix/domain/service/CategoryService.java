@@ -1,6 +1,7 @@
 package br.com.alura.videoflix.domain.service;
 
 import br.com.alura.videoflix.domain.entity.Category;
+import br.com.alura.videoflix.domain.entity.Video;
 import br.com.alura.videoflix.domain.repository.CategoryRepository;
 import br.com.alura.videoflix.exception.BusinessException;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,6 @@ public class CategoryService {
         Optional<Category> categoryOptional = repository.findByTitleOrColor(category.getTitle(),
                 category.getColor());
 
-
         if(categoryOptional.isPresent()){
             if(!(categoryOptional.get().getId().equals(category.getId()))){
                 thereIsCategory = true;
@@ -49,6 +49,15 @@ public class CategoryService {
         }
 
         return repository.save(category);
+    }
+    //------------------------------------------------------------------------------------------
+    public Category updateCategory(Long id, Category category) {
+        Optional<Category> categoryOptional = this.searchById(id);
+        if(categoryOptional.isEmpty()){
+            throw new BusinessException("Category not found!");
+        }
+        category.setId(id);
+        return toSave(category);
     }
     //------------------------------------------------------------------------------------------
 

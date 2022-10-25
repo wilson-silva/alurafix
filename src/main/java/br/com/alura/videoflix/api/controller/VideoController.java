@@ -7,6 +7,7 @@ import br.com.alura.videoflix.domain.entity.Video;
 import br.com.alura.videoflix.domain.repository.VideoRepository;
 import br.com.alura.videoflix.domain.service.VideoService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,16 +24,13 @@ public class VideoController {
 
     private final VideoService service;
 
-
-
-
-    private final VideoRepository repository;
+    private final VideoMapper mapper;
     //------------------------------------------------------------------------------------------
 
     @GetMapping
     public ResponseEntity<List<VideoResponse>> listAllVideos(){
         List<Video> videos = service.listAll();
-        List<VideoResponse> videoResponses = VideoMapper.toVideoResponseList(videos);
+        List<VideoResponse> videoResponses = mapper.toVideoResponseList(videos);
         return ResponseEntity.status(HttpStatus.OK).body(videoResponses);
     }
     //------------------------------------------------------------------------------------------
@@ -43,29 +41,24 @@ public class VideoController {
         if (videoOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        return ResponseEntity.status(HttpStatus.OK).body(VideoMapper.toVideoResponse(videoOptional.get()));
+        return ResponseEntity.status(HttpStatus.OK).body(mapper.toVideoResponse(videoOptional.get()));
     }
     //------------------------------------------------------------------------------------------
 
     @PostMapping
     public ResponseEntity<VideoResponse> saveVideo(@RequestBody @Valid VideoRequest request) {
-        var video = VideoMapper.toVideo(request);
+        var video = mapper.toVideo(request);
         var savedVideo = service.toSave(video);
-        var response = VideoMapper.toVideoResponse(savedVideo);
+        var response = mapper.toVideoResponse(savedVideo);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
     //------------------------------------------------------------------------------------------
 
     @PutMapping("/{id}")
     public ResponseEntity<VideoResponse> updateVideo(@PathVariable Long id, @RequestBody @Valid VideoRequest request){
-        var video = VideoMapper.toVideo(request);
-        Optional<Video> videoOptional = service.searchById(id);
-        if(videoOptional.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-        video.setId(videoOptional.get().getId());
-        var savedVideo = service.toSave(video);
-        var videoResponse = VideoMapper.toVideoResponse(savedVideo);
+        var video = mapper.toVideo(request);
+        var savedVideo = service.updateVideo(id, video);
+        var videoResponse = mapper.toVideoResponse(savedVideo);
         return ResponseEntity.status(HttpStatus.OK).body(videoResponse);
     }
     //------------------------------------------------------------------------------------------

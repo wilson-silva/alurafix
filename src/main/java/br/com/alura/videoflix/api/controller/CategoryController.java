@@ -44,7 +44,7 @@ public class CategoryController {
 
     //------------------------------------------------------------------------------------------
     @PostMapping
-    public ResponseEntity<CategoryResponse> saveCategory(@RequestBody @Valid CategoryRequest request) {
+    public ResponseEntity<CategoryResponse> saveCategory(@Valid @RequestBody CategoryRequest request) {
         var category = mapper.toCategory(request);
         var savedCategory = service.toSave(category);
         var response = mapper.toCategoryResponse(savedCategory);
@@ -56,12 +56,7 @@ public class CategoryController {
     public ResponseEntity<CategoryResponse> updateCategory(@PathVariable Long id, @RequestBody
     @Valid CategoryRequest request) {
         var category = mapper.toCategory(request);
-        Optional<Category> categoryOptional = service.searchById(id);
-        if (categoryOptional.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-        category.setId(categoryOptional.get().getId());
-        var savedCategory = service.toSave(category);
+        var savedCategory = service.updateCategory(id, category);
         var categoryResponse = mapper.toCategoryResponse(savedCategory);
         return ResponseEntity.status(HttpStatus.OK).body(categoryResponse);
     }

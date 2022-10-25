@@ -5,7 +5,6 @@ import br.com.alura.videoflix.domain.repository.VideoRepository;
 import br.com.alura.videoflix.exception.BusinessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -17,12 +16,9 @@ public class VideoService {
     public VideoService(VideoRepository repository) {
         this.repository = repository;
     }
-
-
     //------------------------------------------------------------------------------------------
 
     public List<Video> listAll() {
-
         return repository.findAll();
 
     }
@@ -48,10 +44,17 @@ public class VideoService {
 
         if(thereIsUrl){
            throw new BusinessException("url already registered");
-
         }
-
         return repository.save(video);
+    }
+    //------------------------------------------------------------------------------------------
+    public Video updateVideo(Long id, Video video) {
+        Optional<Video> videoOptional = this.searchById(id);
+        if(videoOptional.isEmpty()){
+            throw new BusinessException("Video not found!");
+        }
+        video.setId(id);
+        return toSave(video);
     }
     //------------------------------------------------------------------------------------------
     @Transactional

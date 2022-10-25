@@ -8,6 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface VideoRepository extends JpaRepository<Video, Long> {
-
     Optional<Video> findByUrl(String url);
 }

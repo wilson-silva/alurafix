@@ -1,19 +1,20 @@
 package br.com.alura.videoflix.api.response;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-
-
 public class VideoResponse {
-    private Long id;
-    private Long categoryId;
+
+    private Long identify;
     private String title;
     private String description;
     private String url;
+    private CategoryResponse category;
 
 }

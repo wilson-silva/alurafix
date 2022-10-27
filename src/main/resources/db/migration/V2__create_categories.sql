@@ -4,7 +4,7 @@ CREATE TABLE categories (
     color VARCHAR(255) NOT NULL
 );
 
-insert into categories(title, color) values('free', 'BLUE');
+insert into categories(title, color) values('LIVRE', 'BLUE');
 insert into categories(title, color) values('back-end', 'YELLOW');
 insert into categories(title, color) values('games', 'RED');
 

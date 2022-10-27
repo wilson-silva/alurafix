@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Builder
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,8 +25,9 @@ public class Category {
 
     private String color;
 
-    @OneToMany(cascade=CascadeType.ALL,mappedBy="category")
+    @OneToMany(mappedBy="category")
     private List<Video> videos = new ArrayList<>();
+
 
 
 

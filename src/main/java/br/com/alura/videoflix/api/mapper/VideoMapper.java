@@ -22,7 +22,6 @@ public class VideoMapper {
     }
 
     public VideoResponse toVideoResponse(Video video) {
-
         return mapper.map(video, VideoResponse.class);
     }
 

@@ -1,9 +1,12 @@
 package br.com.alura.videoflix.api.controller;
 
 import br.com.alura.videoflix.api.mapper.CategoryMapper;
+import br.com.alura.videoflix.api.mapper.VideoMapper;
 import br.com.alura.videoflix.api.request.CategoryRequest;
 import br.com.alura.videoflix.api.response.CategoryResponse;
+import br.com.alura.videoflix.api.response.VideoResponse;
 import br.com.alura.videoflix.domain.entity.Category;
+import br.com.alura.videoflix.domain.entity.Video;
 import br.com.alura.videoflix.domain.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +20,13 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/categories")
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class CategoryController {
 
     private final CategoryService service;
-
     private final CategoryMapper mapper;
+
+    private final VideoMapper videoMapper;
     //------------------------------------------------------------------------------------------
 
     @GetMapping
@@ -30,6 +34,13 @@ public class CategoryController {
         List<Category> categories = service.listAll();
         List<CategoryResponse> categoryResponses = mapper.toCategoryResponseList(categories);
         return ResponseEntity.status(HttpStatus.OK).body(categoryResponses);
+    }
+
+    @GetMapping("/{id}/videos")
+    public ResponseEntity<List<VideoResponse>> listAllVideosByCategories(@PathVariable Long id) {
+        List<Video> videos = service.listVideoByCategory(id);
+        List<VideoResponse> videoResponses = videoMapper.toVideoResponseList(videos);
+        return ResponseEntity.status(HttpStatus.OK).body(videoResponses);
     }
     //------------------------------------------------------------------------------------------
 
@@ -66,7 +77,6 @@ public class CategoryController {
     public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
         service.deleteCategory(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-
     }
 
 }

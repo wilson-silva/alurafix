@@ -6,7 +6,6 @@ import br.com.alura.videoflix.domain.repository.VideoRepository;
 import br.com.alura.videoflix.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,7 +58,6 @@ public class VideoService {
 
         return repository.save(video);
     }
-
     //------------------------------------------------------------------------------------------
     @CacheEvict(value = "listCategory", allEntries = true)
     public Video updateVideo(Long id, Video video) {
@@ -74,19 +72,24 @@ public class VideoService {
     //------------------------------------------------------------------------------------------
     @CacheEvict(value = "listCategory", allEntries = true)
     public void deleteVideo(Long id) {
-        repository.deleteById(id);
+        Optional<Video> optionalVideo = this.searchById(id);
+        if(optionalVideo.isEmpty()){
+            throw new BusinessException("Video not found!");
+        }
+        repository.delete(optionalVideo.get());
     }
     //------------------------------------------------------------------------------------------
 
     public List<Video> listAllVideoCategory(Long id) {
         List<Video> videoList = repository.findByCategoryId(id);
-        if (videoList.isEmpty()) throw new BusinessException("There is no video for the given category");
+        if (videoList.isEmpty()){
+            throw new BusinessException("There is no video for the given category!");
+        }
         return videoList;
     }
-
+    //------------------------------------------------------------------------------------------
     public Video searchByTitle(String title) {
         return repository.findByTitle(title).orElseThrow(
-                () -> new BusinessException("video not found!")
-        );
+                () -> new BusinessException("video not found!"));
     }
 }

@@ -7,6 +7,7 @@ import br.com.alura.videoflix.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -65,7 +66,8 @@ public class CategoryService {
     //------------------------------------------------------------------------------------------
     @CacheEvict(value = "listCategory", allEntries = true)
     public void deleteCategory(Long id){
-        repository.deleteById(id);
+            repository.deleteById(id);
+
     }
     //------------------------------------------------------------------------------------------
     public List<Video> listVideoByCategory(Long id) {

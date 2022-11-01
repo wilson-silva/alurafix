@@ -6,7 +6,10 @@ import javax.persistence.*;
 
 @Setter
 @Getter
+@Builder
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "videos")
 public class Video {
 
@@ -20,23 +23,8 @@ public class Video {
 
     private String url;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Category category;
-
-
-    public Video() {
-
-    }
-
-    public Video(String title, String description, String url, Category category) {
-        this.title = title;
-        this.description = description;
-        this.url = url;
-        if (category.getId() == null) {
-            this.category.setId(1L);
-        }
-        this.category = category;
-    }
 
 
 }

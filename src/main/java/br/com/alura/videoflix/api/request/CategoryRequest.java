@@ -11,9 +11,9 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class CategoryRequest {
 
-    @NotBlank(message = "Title is required")
+    @NotBlank(message = "The field is mandatory")
     private String title;
 
-    @NotBlank(message = "Color is required")
+    @NotBlank(message = "The field is mandatory")
     private String color;
 }

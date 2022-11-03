@@ -7,7 +7,6 @@ import br.com.alura.videoflix.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +23,10 @@ public class CategoryService {
     //------------------------------------------------------------------------------------------
 
     @Cacheable(value = "listCategory")
-    public List<Category> listAll() {
+    public List<Category> listAllCategories() {
+        if(repository.findAll().isEmpty()){
+            throw new BusinessException("empty video list!");
+        }
       return repository.findAll();
     }
     //------------------------------------------------------------------------------------------
@@ -66,15 +68,18 @@ public class CategoryService {
     //------------------------------------------------------------------------------------------
     @CacheEvict(value = "listCategory", allEntries = true)
     public void deleteCategory(Long id){
-            repository.deleteById(id);
-
+        Optional<Category> optionalCategory = this.searchById(id);
+        if(optionalCategory.isEmpty()){
+            throw new BusinessException("Category not found!");
+        }
+        repository.delete(optionalCategory.get());
     }
     //------------------------------------------------------------------------------------------
     public List<Video> listVideoByCategory(Long id) {
         Category category = repository.findById(id).orElseThrow(
                 () -> new BusinessException("Category not found!"));
         List<Video> videos = category.getVideos();
-        if(videos.isEmpty()) throw new BusinessException("There is no video for the given category");
+        if(videos.isEmpty()) throw new BusinessException("There is no video for the given category!");
         return videos;
     }
 

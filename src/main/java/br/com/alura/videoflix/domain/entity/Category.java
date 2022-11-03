@@ -29,9 +29,14 @@ public class Category {
     @OneToMany(mappedBy="category")
     private List<Video> videos = new ArrayList<>();
 
-
-
-
-
+    @Override
+    public String toString() {
+        return "Category{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", color='" + color + '\'' +
+                ", videos=" + videos +
+                '}';
+    }
 }
 

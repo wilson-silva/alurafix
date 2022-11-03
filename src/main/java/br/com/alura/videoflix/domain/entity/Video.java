@@ -22,9 +22,17 @@ public class Video {
     private String description;
 
     private String url;
-
     @ManyToOne(fetch = FetchType.LAZY)
     private Category category;
 
-
+    @Override
+    public String toString() {
+        return "Video{" +
+                "identify=" + identify +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", url='" + url + '\'' +
+                ", category=" + category +
+                '}';
+    }
 }

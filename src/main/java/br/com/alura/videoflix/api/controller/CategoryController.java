@@ -9,7 +9,6 @@ import br.com.alura.videoflix.domain.entity.Category;
 import br.com.alura.videoflix.domain.entity.Video;
 import br.com.alura.videoflix.domain.service.CategoryService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +30,7 @@ public class CategoryController {
 
     @GetMapping
     public ResponseEntity<List<CategoryResponse>> listAllCategories() {
-        List<Category> categories = service.listAll();
+        List<Category> categories = service.listAllCategories();
         List<CategoryResponse> categoryResponses = mapper.toCategoryResponseList(categories);
         return ResponseEntity.status(HttpStatus.OK).body(categoryResponses);
     }

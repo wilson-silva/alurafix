@@ -24,7 +24,6 @@ public class CategoryController {
 
     private final CategoryService service;
     private final CategoryMapper mapper;
-
     private final VideoMapper videoMapper;
     //------------------------------------------------------------------------------------------
 

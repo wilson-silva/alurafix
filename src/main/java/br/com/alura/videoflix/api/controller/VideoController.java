@@ -25,14 +25,14 @@ public class VideoController {
     //------------------------------------------------------------------------------------------
     @GetMapping
     public ResponseEntity<List<VideoResponse>> listAllVideos() {
-        List<Video> videos = service.listAllVideoCategory();
+        List<Video> videos = service.listAllVideos();
         List<VideoResponse> videoResponses = mapper.toVideoResponseList(videos);
         return ResponseEntity.status(HttpStatus.OK).body(videoResponses);
     }
 
     @GetMapping("/{id}/categories")
     public ResponseEntity<List<VideoResponse>> listVideoByCategory(@PathVariable Long id) {
-        List<Video> videos = service.listAllVideoCategory(id);
+        List<Video> videos = service.listAllVideosByCategory(id);
         List<VideoResponse> videoResponses = mapper.toVideoResponseList(videos);
         return ResponseEntity.status(HttpStatus.OK).body(videoResponses);
     }
@@ -48,7 +48,8 @@ public class VideoController {
     }
 
     @GetMapping(value = "/title")
-    public ResponseEntity<VideoResponse> getVideoByTitle(@RequestParam String title) {
+    public ResponseEntity<VideoResponse> getVideoByTitle(
+            @RequestParam(value = "title") String title) {
         Video video = service.searchByTitle(title);
         return ResponseEntity.status(HttpStatus.OK).body(mapper.toVideoResponse(video));
     }

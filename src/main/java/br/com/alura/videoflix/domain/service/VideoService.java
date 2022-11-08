@@ -22,7 +22,7 @@ public class VideoService {
 
     //------------------------------------------------------------------------------------------
 
-    public List<Video> listAllVideoCategory() {
+    public List<Video> listAllVideos() {
         return repository.findAll();
     }
     //------------------------------------------------------------------------------------------
@@ -80,7 +80,7 @@ public class VideoService {
     }
     //------------------------------------------------------------------------------------------
 
-    public List<Video> listAllVideoCategory(Long id) {
+    public List<Video> listAllVideosByCategory(Long id) {
         List<Video> videoList = repository.findByCategoryId(id);
         if (videoList.isEmpty()){
             throw new BusinessException("There is no video for the given category!");

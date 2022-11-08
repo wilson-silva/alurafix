@@ -22,8 +22,6 @@ Pré-requisitos:
 
 ```bash
 
-# EM INICIO DE DESENVOLVIMENTO NÃO SENDO POSSÍVEL EXECUTAR OS PASSAS ABAIXO.
-
 # clonar repositório
 git clone https://github.com/wilson-silva/videoflix
 

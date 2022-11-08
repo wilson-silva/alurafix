@@ -119,7 +119,7 @@ class VideoServiceTest {
         when(repository.findAll())
                 .thenReturn(videos);
 
-        videoService.listAllVideoCategory();
+        videoService.listAllVideos();
 
         verify(repository).findAll();
     }
@@ -230,11 +230,11 @@ class VideoServiceTest {
         when(repository.findByCategoryId(1L))
                 .thenReturn(videos);
 
-        videoService.listAllVideoCategory(category.getId());
+        videoService.listAllVideosByCategory(category.getId());
 
         verify(repository).findByCategoryId(category.getId());
 
-        assertDoesNotThrow(() -> videoService.listAllVideoCategory(category.getId()));
+        assertDoesNotThrow(() -> videoService.listAllVideosByCategory(category.getId()));
     }
     //------------------------------------------------------------------------------------------
 
@@ -249,7 +249,7 @@ class VideoServiceTest {
                 .thenReturn(videos1);
 
         var ex = assertThrows(BusinessException.class, () ->
-                videoService.listAllVideoCategory(video2.getCategory().getId()), "video found for category");
+                videoService.listAllVideosByCategory(video2.getCategory().getId()), "video found for category");
         assertEquals("There is no video for the given category!", ex.getMessage());
     }
     //------------------------------------------------------------------------------------------

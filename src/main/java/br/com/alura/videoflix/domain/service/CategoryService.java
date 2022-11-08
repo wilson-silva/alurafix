@@ -72,7 +72,8 @@ public class CategoryService {
         if(optionalCategory.isEmpty()){
             throw new BusinessException("Category not found!");
         }
-        repository.delete(optionalCategory.get());
+        var category = optionalCategory.get();
+        repository.delete(category);
     }
     //------------------------------------------------------------------------------------------
     public List<Video> listVideoByCategory(Long id) {

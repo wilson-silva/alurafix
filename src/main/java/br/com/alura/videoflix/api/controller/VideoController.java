@@ -10,13 +10,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
-@RequiredArgsConstructor
+
+
 @RestController
 @RequestMapping("/videos")
-
+@RequiredArgsConstructor
 public class VideoController {
 
     private final VideoService service;
@@ -56,7 +58,7 @@ public class VideoController {
     //------------------------------------------------------------------------------------------
 
     @PostMapping
-    public ResponseEntity<VideoResponse> saveVideo(@RequestBody VideoRequest request) {
+    public ResponseEntity<VideoResponse> saveVideo(@Valid @RequestBody VideoRequest request) {
         var video = mapper.toVideo(request);
         var savedVideo = service.toSave(video);
         var response = mapper.toVideoResponse(savedVideo);
@@ -65,7 +67,7 @@ public class VideoController {
     //------------------------------------------------------------------------------------------
 
     @PutMapping("/{id}")
-    public ResponseEntity<VideoResponse> updateVideo(@PathVariable Long id, @RequestBody VideoRequest request) {
+    public ResponseEntity<VideoResponse> updateVideo(@PathVariable Long id, @RequestBody @Valid VideoRequest request) {
 
         var video = mapper.toVideo(request);
         var savedVideo = service.updateVideo(id, video);

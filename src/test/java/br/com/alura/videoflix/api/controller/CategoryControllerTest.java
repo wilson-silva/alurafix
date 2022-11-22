@@ -6,7 +6,6 @@ import br.com.alura.videoflix.domain.entity.Category;
 import br.com.alura.videoflix.domain.entity.Video;
 import br.com.alura.videoflix.domain.repository.CategoryRepository;
 import br.com.alura.videoflix.domain.service.CategoryService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,6 +22,7 @@ import java.util.Optional;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -113,8 +113,10 @@ class CategoryControllerTest {
         when(categoryService.toSave(category)).thenReturn(category);
 
         mockMvc.perform(post("/categories")
+
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(category)))
+                .andDo(print())
                 .andExpect(status().isCreated());
     }
     //------------------------------------------------------------------------------------------

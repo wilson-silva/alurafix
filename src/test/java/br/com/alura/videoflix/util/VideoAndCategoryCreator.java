@@ -6,9 +6,11 @@ import br.com.alura.videoflix.api.response.VideoResponse;
 import br.com.alura.videoflix.domain.entity.Category;
 import br.com.alura.videoflix.domain.entity.Video;
 
+import java.util.List;
+
 public class VideoAndCategoryCreator {
 
-    public static VideoRequest createVideoToBeSave(){
+    public static VideoRequest createVideoRequest(){
         return VideoRequest.builder()
                 .title("video1")
                 .description("video1")
@@ -17,13 +19,7 @@ public class VideoAndCategoryCreator {
                 .build();
     }
 
-    public static Category createCategory(){
-        return Category.builder()
-                .id(1L)
-                .title("title1")
-                .color("color1")
-                .build();
-    }
+
 
     public static Video createVideo(){
        return Video.builder()
@@ -31,16 +27,11 @@ public class VideoAndCategoryCreator {
                .title("video1")
                .description("description1")
                .url("video1@video1.com")
-               .category(createCategory()).build();
+               .category(CategoryCreator.createCategory())
+               .build();
     }
 
-    public static CategoryResponse createCategoryResponse(){
-        return CategoryResponse.builder()
-                .id(createCategory().getId())
-                .title(createCategory().getTitle())
-                .color(createCategory().getColor())
-                .build();
-    }
+
 
     public static VideoResponse createVideoResponse(){
         return  VideoResponse.builder()
@@ -48,8 +39,16 @@ public class VideoAndCategoryCreator {
                 .title("video1")
                 .description("description1")
                 .url("video1@video1.com")
-                .category(createCategoryResponse())
+                .category(CategoryResponseCreator.createCategoryResponse())
                 .build();
+    }
+
+    public static List<VideoResponse> createListResponse(){
+        return List.of(VideoAndCategoryCreator.createVideoResponse());
+    }
+
+    public static List<Video> createListVideo(){
+        return List.of(VideoAndCategoryCreator.createVideo());
     }
 
 }

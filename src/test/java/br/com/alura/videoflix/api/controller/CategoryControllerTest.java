@@ -2,157 +2,149 @@ package br.com.alura.videoflix.api.controller;
 
 import br.com.alura.videoflix.api.mapper.CategoryMapper;
 import br.com.alura.videoflix.api.mapper.VideoMapper;
-import br.com.alura.videoflix.domain.entity.Category;
-import br.com.alura.videoflix.domain.entity.Video;
-import br.com.alura.videoflix.domain.repository.CategoryRepository;
+import br.com.alura.videoflix.api.response.CategoryResponse;
+import br.com.alura.videoflix.api.response.VideoResponse;
 import br.com.alura.videoflix.domain.service.CategoryService;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import br.com.alura.videoflix.util.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+@ExtendWith(SpringExtension.class)
 class CategoryControllerTest {
 
-    @Autowired
-    MockMvc mockMvc;
+    @InjectMocks
+    private CategoryController categoryController;
 
-    @MockBean
-    private CategoryService categoryService;
+    @Mock
+    private CategoryService service;
 
-    @MockBean
-    private CategoryMapper categoryMapper;
+    @Mock
+    private CategoryMapper mapper;
 
-    @MockBean
+    @Mock
     private VideoMapper videoMapper;
+    //------------------------------------------------------------------------------------------
+    @BeforeEach
+    public void setup() throws JsonProcessingException {
 
-    @MockBean
-    private CategoryRepository repository;
+        when(service.listAllCategories()).thenReturn(ListCategoryCreator.createListCategory());
+        when(service.listVideoByCategory(anyLong())).thenReturn(ListVideoCreator.createListVideo());
+        when(service.searchById(anyLong())).thenReturn(Optional.of(CategoryCreator.createCategory()));
+        when(service.toSave(any())).thenReturn(CategoryCreator.createCategory());
+        when(service.updateCategory(anyLong(), any())).thenReturn(CategoryCreator.createCategory());
 
-    @Autowired
-    private ObjectMapper objectMapper;
+        when(mapper.toCategoryResponseList(anyList())).thenReturn(ListCategoryCreator.createListCategoryResponse());
+        when(videoMapper.toVideoResponseList(anyList())).thenReturn(ListVideoCreator.createListResponse());
+        when(mapper.toCategoryResponse(any())).thenReturn(CategoryResponseCreator.createCategoryResponse());
+
+    }
     //------------------------------------------------------------------------------------------
 
     @DisplayName("tests the category list")
     @Test
-    void listAllCategories() throws Exception {
-        List<Category> listCategory = new ArrayList<>();
-        listCategory.add(Category.builder().id(1L).title("title1").color("color1").build());
-        listCategory.add(Category.builder().id(2L).title("title2").color("color2").build());
+    void listAllCategories() {
+        String expectedTitle = "title1";
+        List<CategoryResponse> categoryResponseList = categoryController.listAllCategories().getBody();
 
-        when(categoryService.listAllCategories()).thenReturn(listCategory);
-
-        mockMvc.perform(get("/categories")).andExpect(status().isOk());
+        assertThat(categoryResponseList)
+                .isNotNull()
+                .isNotEmpty()
+                .hasSize(1);
+        assertThat(categoryResponseList.get(0).getTitle()).isEqualTo(expectedTitle);
     }
     //------------------------------------------------------------------------------------------
 
     @DisplayName("tests the video list search by category")
     @Test
-    void listAllVideosByCategories() throws Exception {
-        Long ID = 1L;
-        String URL = "/categories/{id}/videos";
-        var category = Category.builder().id(1L).title("title1").color("color1").build();
-        List<Video> videoList = new ArrayList<>();
-        videoList.add(Video.builder().identify(1L).title("video2").description("video2")
-                .url("video1@video1.com").category(category).build());
+    void listAllVideosByCategories() {
+        Long expectedId = 1L;
+        List<VideoResponse> videoResponseList = categoryController.listAllVideosByCategories(1L).getBody();
 
-        when(categoryService.listVideoByCategory(1L)).thenReturn(videoList);
-
-        mockMvc.perform(get(URL, ID)).andExpect(status().isOk());
+        assertThat(videoResponseList)
+                .isNotNull()
+                .isNotEmpty()
+                .hasSize(1);
+        assertThat(videoResponseList.get(0).getIdentify()).isEqualTo(expectedId);
     }
-    //------------------------------------------------------------------------------------------
+      //------------------------------------------------------------------------------------------
 
     @DisplayName("tests category search by id")
     @Test
-    void searchCategory() throws Exception {
-        Long ID = 1L;
-        String URL = "/categories/{id}";
-        var category = Category.builder().id(1L).title("title1").color("color1").build();
+    void searchCategory()  {
+        Long expectedId = CategoryCreator.createCategory().getId();
+        var categoryResponse = categoryController.searchCategory(1L).getBody();
 
-        when(categoryService.searchById(ID)).thenReturn(Optional.of(category));
+        assertThat(categoryResponse).isNotNull();
 
-        mockMvc.perform(get(URL, ID)).andExpect(status().isOk());
+        assertThat(categoryResponse.getId()).isNotNull().isEqualTo(expectedId);
     }
     //------------------------------------------------------------------------------------------
 
     @DisplayName("tests when the category is not found")
     @Test
     void searchCategoryWhenTheCategoryIsNotFound() throws Exception {
-        Long ID = 1L;
-        String URL = "/categories/{id}";
 
-        when(categoryService.searchById(ID)).thenReturn(Optional.empty());
+        when(service.searchById(anyLong())).thenReturn(Optional.empty());
+        when(mapper.toCategoryResponse(any())).thenReturn(null);
 
-        mockMvc.perform(get(URL, ID)).andExpect(status().isNotFound());
+        var categoryResponse = categoryController.searchCategory(1L).getBody();
+        var categoryResponseStatus = categoryController.searchCategory(1L);
+
+        assertThat(categoryResponse)
+                .isNull();
+        assertThat(categoryResponseStatus.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+
     }
     //------------------------------------------------------------------------------------------
 
     @DisplayName("tests controller to save category")
     @Test
-    void saveCategory() throws Exception {
-
-        var category = Category.builder()
-                .id(1L).title("testando controller")
-                .color("BLUE").build();
-
-        when(categoryService.toSave(category)).thenReturn(category);
-
-        mockMvc.perform(post("/categories")
-
-                        .contentType("application/json")
-                        .content(objectMapper.writeValueAsString(category)))
-                .andDo(print())
-                .andExpect(status().isCreated());
+    void saveCategory()  {
+        var categoryResponse = categoryController.saveCategory(CategoryRequestCreator
+                        .createCategoryRequest()).getBody();
+        assertThat(categoryResponse)
+                .isNotNull();
+        assertThat(CategoryCreator.createCategory().getTitle()).isEqualTo(categoryResponse.getTitle());
     }
     //------------------------------------------------------------------------------------------
 
     @DisplayName("tests controller to change category")
     @Test
-    void updateCategory() throws Exception {
+    void updateCategory()  {
+        var categoryResponse = categoryController.updateCategory(1L, CategoryRequestCreator
+                .createCategoryRequest()).getBody();
 
-        Long ID = 1L;
-        String URL = "/categories/{id}";
-        var category = Category.builder()
-                .id(1L).title("testando controller")
-                .color("BLUE").build();
-
-        when(categoryService.updateCategory(ID, category)).thenReturn(category);
-
-        mockMvc.perform(put(URL, ID)
-                        .contentType("application/json")
-                        .content(objectMapper.writeValueAsString(category)))
-                .andExpect(status().isOk());
+        assertThat(categoryResponse)
+                .isNotNull();
+        assertThat(CategoryCreator.createCategory().getId()).isEqualTo(categoryResponse.getId());
     }
     //------------------------------------------------------------------------------------------
 
     @DisplayName("tests controller to delete category")
     @Test
-    void deleteCategory() throws Exception {
-        Long ID = 1L;
-        String URL = "/categories/{id}";
-        var category = Category.builder()
-                .id(ID).title("testando controller")
-                .color("BLUE").build();
-        when(categoryService.searchById(category.getId())).thenReturn(Optional.of(category));
+    void deleteCategory()  {
+        assertThatCode(() -> categoryController.deleteCategory(1L)).doesNotThrowAnyException();
 
-        mockMvc.perform(MockMvcRequestBuilders
-                .delete(URL, ID)
-                .contentType("application/json"))
-                .andExpect(status().isNoContent());
+        ResponseEntity<Void> entity = categoryController.deleteCategory(1L);
+
+        assertThat(entity).isNotNull();
+        assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+
     }
 }

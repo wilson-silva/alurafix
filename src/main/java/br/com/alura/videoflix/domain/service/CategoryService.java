@@ -4,6 +4,7 @@ import br.com.alura.videoflix.domain.entity.Category;
 import br.com.alura.videoflix.domain.entity.Video;
 import br.com.alura.videoflix.domain.repository.CategoryRepository;
 import br.com.alura.videoflix.exception.BusinessException;
+import br.com.alura.videoflix.exception.ConflitException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -72,6 +73,10 @@ public class CategoryService {
         if(optionalCategory.isEmpty()){
             throw new BusinessException("Category not found!");
         }
+
+        List<Video> videos = optionalCategory.get().getVideos();
+        if(!videos.isEmpty()) throw new ConflitException("category cannot be deleted, is in use!");
+
         var category = optionalCategory.get();
         repository.delete(category);
     }

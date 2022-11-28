@@ -50,8 +50,7 @@ public class VideoController {
     }
 
     @GetMapping(value = "/title")
-    public ResponseEntity<VideoResponse> getVideoByTitle(
-            @RequestParam(value = "title") String title) {
+    public ResponseEntity<VideoResponse> getVideoByTitle(@RequestParam(value = "title") String title) {
         Video video = service.searchByTitle(title);
         return ResponseEntity.status(HttpStatus.OK).body(mapper.toVideoResponse(video));
     }

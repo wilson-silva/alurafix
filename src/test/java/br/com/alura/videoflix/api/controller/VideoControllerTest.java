@@ -3,7 +3,8 @@ package br.com.alura.videoflix.api.controller;
 import br.com.alura.videoflix.api.mapper.VideoMapper;
 import br.com.alura.videoflix.api.response.VideoResponse;
 import br.com.alura.videoflix.domain.service.VideoService;
-import br.com.alura.videoflix.util.VideoAndCategoryCreator;
+import br.com.alura.videoflix.util.ListVideoCreator;
+import br.com.alura.videoflix.util.VideoCreator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -37,13 +38,13 @@ class VideoControllerTest {
     @BeforeEach
     public void setup() throws JsonProcessingException {
 
-        when(videoService.searchById(anyLong())).thenReturn(Optional.of(VideoAndCategoryCreator.createVideo()));
-        when(videoService.searchByTitle(anyString())).thenReturn(VideoAndCategoryCreator.createVideo());
-        when(videoService.toSave(any())).thenReturn(VideoAndCategoryCreator.createVideo());
+        when(videoService.searchById(anyLong())).thenReturn(Optional.of(VideoCreator.createVideo()));
+        when(videoService.searchByTitle(anyString())).thenReturn(VideoCreator.createVideo());
+        when(videoService.toSave(any())).thenReturn(VideoCreator.createVideo());
 
-        when(mapper.toVideoResponseList(anyList())).thenReturn(VideoAndCategoryCreator.createListResponse());
-        when(mapper.toVideo(any())).thenReturn(VideoAndCategoryCreator.createVideo());
-        when(mapper.toVideoResponse(any())).thenReturn(VideoAndCategoryCreator.createVideoResponse());
+        when(mapper.toVideoResponseList(anyList())).thenReturn(ListVideoCreator.createListResponse());
+        when(mapper.toVideo(any())).thenReturn(VideoCreator.createVideo());
+        when(mapper.toVideoResponse(any())).thenReturn(VideoCreator.createVideoResponse());
     }
     //------------------------------------------------------------------------------------------
 
@@ -95,7 +96,7 @@ class VideoControllerTest {
     @DisplayName("should return success when the video is found by id")
     @Test
     void shouldReturnSuccessWhenTheVideoIsFoundById() {
-        Long expectedId = VideoAndCategoryCreator.createVideo().getIdentify();
+        Long expectedId = VideoCreator.createVideo().getIdentify();
         VideoResponse videoResponse = videoController.getOneVideo(1L).getBody();
 
         assertThat(videoResponse).isNotNull();
@@ -112,9 +113,11 @@ class VideoControllerTest {
         when(mapper.toVideoResponse(any())).thenReturn(null);
 
         var videoResponse = videoController.getOneVideo(1L).getBody();
+        var videoResponseStatus = videoController.getOneVideo(1L);
 
         assertThat(videoResponse)
                 .isNull();
+        assertThat(videoResponseStatus.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 
     }
    //------------------------------------------------------------------------------------------
@@ -151,10 +154,10 @@ class VideoControllerTest {
     @DisplayName("tests controller to save video")
     @Test
     void saveVideo()  {
-        var videoResponse = videoController.saveVideo(VideoAndCategoryCreator.createVideoRequest()).getBody();
+        var videoResponse = videoController.saveVideo(VideoCreator.createVideoRequest()).getBody();
         assertThat(videoResponse)
                 .isNotNull();
-        assertThat(VideoAndCategoryCreator.createVideo().getTitle()).isEqualTo(videoResponse.getTitle());
+        assertThat(VideoCreator.createVideo().getTitle()).isEqualTo(videoResponse.getTitle());
     }
    //------------------------------------------------------------------------------------------
 
@@ -162,12 +165,12 @@ class VideoControllerTest {
     @Test
     void updateVideo() {
 
-        var videoResponse = videoController.updateVideo(1L, VideoAndCategoryCreator
+        var videoResponse = videoController.updateVideo(1L, VideoCreator
                 .createVideoRequest()).getBody();
 
         assertThat(videoResponse)
                 .isNotNull();
-        assertThat(VideoAndCategoryCreator.createVideo().getIdentify()).isEqualTo(videoResponse.getIdentify());
+        assertThat(VideoCreator.createVideo().getIdentify()).isEqualTo(videoResponse.getIdentify());
     }
     //------------------------------------------------------------------------------------------
 

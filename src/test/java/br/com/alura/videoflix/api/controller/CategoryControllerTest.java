@@ -45,9 +45,9 @@ class CategoryControllerTest {
 
         when(service.listAllCategories()).thenReturn(ListCategoryCreator.createListCategory());
         when(service.listVideoByCategory(anyLong())).thenReturn(ListVideoCreator.createListVideo());
-        when(service.searchById(anyLong())).thenReturn(Optional.of(CategoryCreator.createCategory()));
-        when(service.toSave(any())).thenReturn(CategoryCreator.createCategory());
-        when(service.updateCategory(anyLong(), any())).thenReturn(CategoryCreator.createCategory());
+        when(service.searchById(anyLong())).thenReturn(Optional.of(CategoryCreator.createCategory1()));
+        when(service.toSave(any())).thenReturn(CategoryCreator.createCategory1());
+        when(service.updateCategory(anyLong(), any())).thenReturn(CategoryCreator.createCategory1());
 
         when(mapper.toCategoryResponseList(anyList())).thenReturn(ListCategoryCreator.createListCategoryResponse());
         when(videoMapper.toVideoResponseList(anyList())).thenReturn(ListVideoCreator.createListResponse());
@@ -87,7 +87,7 @@ class CategoryControllerTest {
     @DisplayName("tests category search by id")
     @Test
     void searchCategory()  {
-        Long expectedId = CategoryCreator.createCategory().getId();
+        Long expectedId = CategoryCreator.createCategory1().getId();
         var categoryResponse = categoryController.searchCategory(1L).getBody();
 
         assertThat(categoryResponse).isNotNull();
@@ -120,7 +120,7 @@ class CategoryControllerTest {
                         .createCategoryRequest()).getBody();
         assertThat(categoryResponse)
                 .isNotNull();
-        assertThat(CategoryCreator.createCategory().getTitle()).isEqualTo(categoryResponse.getTitle());
+        assertThat(CategoryCreator.createCategory1().getTitle()).isEqualTo(categoryResponse.getTitle());
     }
     //------------------------------------------------------------------------------------------
 
@@ -132,7 +132,7 @@ class CategoryControllerTest {
 
         assertThat(categoryResponse)
                 .isNotNull();
-        assertThat(CategoryCreator.createCategory().getId()).isEqualTo(categoryResponse.getId());
+        assertThat(CategoryCreator.createCategory1().getId()).isEqualTo(categoryResponse.getId());
     }
     //------------------------------------------------------------------------------------------
 

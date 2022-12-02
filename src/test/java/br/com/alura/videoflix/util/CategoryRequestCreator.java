@@ -6,8 +6,16 @@ public class CategoryRequestCreator {
 
     public static CategoryRequest createCategoryRequest(){
         return CategoryRequest.builder()
-                .title(CategoryCreator.createCategory().getTitle())
-                .color(CategoryCreator.createCategory().getColor())
+                .title(CategoryCreator.createCategory1().getTitle())
+                .color(CategoryCreator.createCategory1().getColor())
+                .build();
+
+    }
+
+    public static CategoryRequest createCategoryRequestNew(){
+        return CategoryRequest.builder()
+                .title("title3")
+                .color("color3")
                 .build();
 
     }

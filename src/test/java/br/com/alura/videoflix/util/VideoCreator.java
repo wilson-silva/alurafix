@@ -4,8 +4,6 @@ import br.com.alura.videoflix.api.request.VideoRequest;
 import br.com.alura.videoflix.api.response.VideoResponse;
 import br.com.alura.videoflix.domain.entity.Video;
 
-import java.util.List;
-
 public class VideoCreator {
 
     public static VideoRequest createVideoRequest(){
@@ -23,7 +21,7 @@ public class VideoCreator {
                .title("video1")
                .description("description1")
                .url("video1@video1.com")
-               .category(CategoryCreator.createCategory())
+               .category(CategoryCreator.createCategory1())
                .build();
     }
 

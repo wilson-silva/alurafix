@@ -6,9 +6,9 @@ public class CategoryResponseCreator {
 
     public static CategoryResponse createCategoryResponse(){
         return CategoryResponse.builder()
-                .id(CategoryCreator.createCategory().getId())
-                .title(CategoryCreator.createCategory().getTitle())
-                .color(CategoryCreator.createCategory().getColor())
+                .id(CategoryCreator.createCategory1().getId())
+                .title(CategoryCreator.createCategory1().getTitle())
+                .color(CategoryCreator.createCategory1().getColor())
                 .build();
 
     }

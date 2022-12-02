@@ -5,6 +5,7 @@ import br.com.alura.videoflix.domain.entity.Category;
 import br.com.alura.videoflix.domain.repository.CategoryRepository;
 import br.com.alura.videoflix.domain.repository.VideoRepository;
 import br.com.alura.videoflix.exception.BusinessException;
+import br.com.alura.videoflix.exception.ConflitException;
 import br.com.alura.videoflix.util.CategoryCreator;
 import br.com.alura.videoflix.util.CategoryRequestCreator;
 import br.com.alura.videoflix.util.VideoCreator;
@@ -180,6 +181,37 @@ class CategoryControllerIt{
                 .andDo(print());
     }
     //------------------------------------------------------------------------------------------
+    @DisplayName("Should delete category")
+    @Test
+    void deleteCategory() throws Exception {
+
+        mockMvc.perform(delete("/categories/{id}", 2L))
+                .andExpect(status().isNoContent())
+                .andDo(print());
+    }
+    //------------------------------------------------------------------------------------------
+    @DisplayName("Should not delete category")
+    @Test
+    void TestDeleteCategoryWhenCategoryIsNotFound() throws Exception {
+
+        mockMvc.perform(delete("/categories/{id}", 100L))
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(result -> Assertions.assertTrue(result.getResolvedException()
+                        instanceof BusinessException))
+                .andDo(print());
+    }
+
+    //------------------------------------------------------------------------------------------
+    @DisplayName("Should not delete category when category is used in video")
+    @Test
+    void TestDeleteCategoryWhenCategoryIsUsed() throws Exception {
+
+        mockMvc.perform(delete("/categories/{id}", 1L))
+                .andExpect(status().isConflict())
+                .andExpect(result -> Assertions.assertTrue(result.getResolvedException()
+                        instanceof ConflitException))
+                .andDo(print());
+    }
 
 
 }

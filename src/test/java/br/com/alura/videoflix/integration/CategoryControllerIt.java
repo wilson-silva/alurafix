@@ -12,9 +12,11 @@ import br.com.alura.videoflix.util.VideoCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -42,20 +44,11 @@ class CategoryControllerIt{
 
     @BeforeEach
     void up(){
-
         var savedCategory = categoryRepository.save(CategoryCreator.createCategory1());
         var savedCategory2 = categoryRepository.save(CategoryCreator.createCategory2());
         var savedVideo = videoRepository.save(VideoCreator.createVideo());
     }
     //------------------------------------------------------------------------------------------
-
-    @AfterAll
-    void down(){
-        videoRepository.deleteAll();
-        categoryRepository.deleteAll();
-    }
-    //------------------------------------------------------------------------------------------
-
     @DisplayName("List all categories")
     @Test
     void listAllCategories() throws Exception {
@@ -77,7 +70,7 @@ class CategoryControllerIt{
     @DisplayName("Should not return list of videos by category when category is not found")
     @Test
     void TestListAllVideosByCategoriesWhenCategoryNotFound() throws Exception {
-        mockMvc.perform(get("/categories/{id}/videos", 2L))
+        mockMvc.perform(get("/categories/"+ 2L +"/videos"))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(result -> Assertions.assertTrue(result.getResolvedException()
                         instanceof BusinessException))
@@ -97,7 +90,7 @@ class CategoryControllerIt{
     @DisplayName("Should not return category when category is not found")
     @Test
     void TestSearchCategoryWhenCategoryIsNotFound() throws Exception {
-        mockMvc.perform(get("/categories/{id}", 10L))
+        mockMvc.perform(get("/categories/{id}", 100L))
                 .andExpect(status().isNotFound())
                 .andDo(print());
     }
@@ -123,12 +116,10 @@ class CategoryControllerIt{
     @DisplayName("Should not save a category")
     @Test
     void saveCategoryWithTitleOrColorExistent() throws Exception {
-
         var category = CategoryRequest.builder()
                 .title("title1")
                 .color("color1")
                 .build();
-
         var categoryRequest = objectMapper.writeValueAsString(category);
 
         mockMvc.perform(post("/categories")
@@ -212,6 +203,4 @@ class CategoryControllerIt{
                         instanceof ConflitException))
                 .andDo(print());
     }
-
-
 }

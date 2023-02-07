@@ -1,12 +1,13 @@
 package br.com.alura.videoflix.api.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
-@Getter
-@Setter
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+
 public class VideoResponse {
 
     private Long identify;

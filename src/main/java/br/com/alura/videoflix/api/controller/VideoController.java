@@ -5,8 +5,10 @@ import br.com.alura.videoflix.api.request.VideoRequest;
 import br.com.alura.videoflix.api.response.VideoResponse;
 import br.com.alura.videoflix.domain.entity.Video;
 import br.com.alura.videoflix.domain.service.VideoService;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,7 +34,7 @@ public class VideoController {
         return ResponseEntity.status(HttpStatus.OK).body(videoResponses);
     }
 
-    @GetMapping("/{id}/categories")
+    @GetMapping(value = "/{id}/categories", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<VideoResponse>> listVideoByCategory(@PathVariable Long id) {
         List<Video> videos = service.listAllVideosByCategory(id);
         List<VideoResponse> videoResponses = mapper.toVideoResponseList(videos);

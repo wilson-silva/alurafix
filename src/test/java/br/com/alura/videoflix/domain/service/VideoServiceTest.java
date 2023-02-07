@@ -32,7 +32,6 @@ class VideoServiceTest {
     private CategoryService categoryService;
     @Autowired
     private VideoService videoService;
-
     @Captor
     ArgumentCaptor<Video> videoCaptor;
 

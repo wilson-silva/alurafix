@@ -10,7 +10,7 @@ public class VideoCreator {
         return VideoRequest.builder()
                 .title("video1")
                 .description("video1")
-                .url("video1@video1.com")
+                .url("https://www.youtube.com/teste2")
                 .categoryId(1L)
                 .build();
     }
@@ -20,19 +20,17 @@ public class VideoCreator {
                .identify(1L)
                .title("video1")
                .description("description1")
-               .url("video1@video1.com")
+               .url("https://www.youtube.com/teste2")
                .category(CategoryCreator.createCategory1())
                .build();
     }
-
-
 
     public static VideoResponse createVideoResponse(){
         return  VideoResponse.builder()
                 .identify(1L)
                 .title("video1")
                 .description("description1")
-                .url("video1@video1.com")
+                .url("https://www.youtube.com/teste2")
                 .category(CategoryResponseCreator.createCategoryResponse())
                 .build();
     }

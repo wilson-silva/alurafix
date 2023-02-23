@@ -21,7 +21,7 @@ public class Video {
     private String description;
 
     private String url;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Category category;
 
     @Override
@@ -31,7 +31,7 @@ public class Video {
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", url='" + url + '\'' +
-                ", category=" + category +
+                //", category=" + category +
                 '}';
     }
 }

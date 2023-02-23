@@ -16,12 +16,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.List;
+import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -168,22 +170,35 @@ public class VideoControllerIt {
                 Video.class);
 
         assertThat(videoResponse).isNotNull();
-        assertEquals(videoResponse.getStatusCode(), HttpStatus.CREATED);
-        assertThat(videoResponse.getBody().getIdentify()).isNotNull();
+        assertEquals(HttpStatus.CREATED, videoResponse.getStatusCode());
+        assertThat(Objects.requireNonNull(videoResponse.getBody()).getIdentify()).isNotNull();
     }
-//    //------------------------------------------------------------------------------------------
-//
-//    @DisplayName("tests controller to update video")
-//    @Test
-//    void updateVideo() {
-//
-//        var videoResponse = videoController.updateVideo(1L, VideoCreator
-//                .createVideoRequest()).getBody();
-//
-//        assertThat(videoResponse)
-//                .isNotNull();
-//        assertThat(VideoCreator.createVideo().getIdentify()).isEqualTo(videoResponse.getIdentify());
-//    }
+    //------------------------------------------------------------------------------------------
+    @DisplayName("tests controller to update video")
+    @Test
+    void updateVideo() {
+
+        var category = categoryRepository.save(CategoryCreator.createCategory1());
+        var video = videoRepository.save(VideoCreator.createVideo());
+
+        var request = new VideoRequest();
+        request.setTitle("update title");
+        request.setDescription("update description");
+        request.setUrl("https://www.youtube.com/teste2");
+        request.setCategoryId(1L);
+
+        String resourceUrl = "/videos/" + video.getIdentify();
+
+        var httpEntity = new HttpEntity<>(request);
+
+       var videoResponse = testRestTemplate.exchange(resourceUrl, HttpMethod.PUT,
+               httpEntity, VideoResponse.class);
+
+        assertThat(videoResponse).isNotNull();
+        assertEquals(HttpStatus.OK, videoResponse.getStatusCode());
+        assertThat(Objects.requireNonNull(videoResponse.getBody()).getIdentify()).isNotNull();
+        assertEquals(videoResponse.getBody().getDescription(), "update description");
+    }
 //    //------------------------------------------------------------------------------------------
 //
 //    @DisplayName("tests controller to delete video")

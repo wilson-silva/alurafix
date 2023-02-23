@@ -41,6 +41,7 @@ class CategoryServiceTest {
                 .id(1L)
                 .title("teste")
                 .color("BLUE")
+                .videos(List.of())
                 .build();
 
         video = Video.builder()
@@ -161,14 +162,13 @@ class CategoryServiceTest {
     @DisplayName("Should delete a category")
     @Test
     void testMethodDeleteCategory() {
-        Long id = 1L;
 
-        when(categoryService.searchById(id)).thenReturn(Optional.of(category));
-
-        categoryService.deleteCategory(id);
+        when(categoryService.searchById(1L)).thenReturn(Optional.of(category));
+        System.out.println(category.getVideos());
+        categoryService.deleteCategory(1L);
         verify(categoryRepository).delete(category);
 
-        assertDoesNotThrow(() -> categoryService.deleteCategory(id));
+        assertDoesNotThrow(() -> categoryService.deleteCategory(1L));
     }
     //------------------------------------------------------------------------------------------
 

@@ -25,7 +25,7 @@ public class Category {
 
     private String color;
 
-    @OneToMany(mappedBy="category")
+    @OneToMany(mappedBy="category", fetch = FetchType.EAGER)
     private List<Video> videos = new ArrayList<>();
 
     @Override

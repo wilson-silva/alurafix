@@ -75,10 +75,11 @@ public class CategoryService {
         }
 
         List<Video> videos = optionalCategory.get().getVideos();
-        if(!videos.isEmpty()) throw new ConflitException("category cannot be deleted, is in use!");
+        if(!videos.isEmpty()) {
+            throw new ConflitException("category cannot be deleted, is in use!");
+        }
 
-        var category = optionalCategory.get();
-        repository.delete(category);
+        repository.delete(optionalCategory.get());
     }
     //------------------------------------------------------------------------------------------
     public List<Video> listVideoByCategory(Long id) {
